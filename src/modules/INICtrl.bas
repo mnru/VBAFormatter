@@ -1,17 +1,26 @@
 Attribute VB_Name = "INICtrl"
+#If VBA7 Then 
+
 Declare PtrSafe Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" _
-(ByVal AppName As String, _
-ByVal KeyName As String, _
-ByVal Default As String, _
-ByVal ReturnedString As String, _
-ByVal MaxSize As Long, _
-ByVal FileName As String) As Long
+(ByVal AppName As String, ByVal KeyName As String, ByVal Default As String, _
+ByVal ReturnedString As String, ByVal MaxSize As Long, ByVal FileName As String) As Long
 
 Declare PtrSafe Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" _
-(ByVal AppName As String, _
-ByVal KeyName As Any, _
-ByVal lpString As Any, _
+(ByVal AppName As String, ByVal KeyName As Any, ByVal lpString As Any, _
 ByVal FileName As String) As Long
+
+#Else
+
+Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" _
+(ByVal AppName As String, ByVal KeyName As String, ByVal Default As String, _
+ByVal ReturnedString As String, ByVal MaxSize As Long, ByVal FileName As String) As Long
+
+Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" _
+(ByVal AppName As String, ByVal KeyName As Any, ByVal lpString As Any, _
+ByVal FileName As String) As Long
+
+#End If
+
 
 Public Const INI_NAME                As String = "VBAFormatter.Ini"
 Public Const INI_SEC_OPT_FORMAT      As String = "OptFormat"
