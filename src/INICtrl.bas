@@ -47,9 +47,9 @@ Public Function GetIniValue(aIniKey As String, aIniSection As String) As String
     GetIniValue = Left(wIniVal, InStr(wIniVal, vbNullChar) - 1)
     If GetIniValue = "" Then
         Err.Raise 1000 - vbObjectError, _
-         "設定ファイルの取得", _
+        "設定ファイルの取得", _
         "設定ファイルの読み込みに失敗しました。" & vbNewLine & Application.UserLibraryPath & "に存在する「VBAFormatter.Ini」を削除し、再度実行してみてください。" & aIniKey & vbNewLine & aIniSection
-   End If
+    End If
 End Function
 
 Public Sub SetIniValue(aIniKey As String, aIniSection As String, aValue As String)
