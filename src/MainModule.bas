@@ -253,4 +253,3 @@ End Sub
 Function Instr2(aStart As Integer, aString1 As Variant, aString2 As String) As Long
     Instr2 = InStrB(aStart, StrConv(aString1, vbFromUnicode), StrConv(aString2, vbFromUnicode))
 End Function
-
