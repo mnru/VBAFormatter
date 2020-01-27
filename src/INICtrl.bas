@@ -21,7 +21,6 @@ ByVal FileName As String) As Long
 
 #End If
 
-
 Public Const INI_NAME                As String = "VBAFormatter.Ini"
 Public Const INI_SEC_OPT_FORMAT      As String = "OptFormat"
 Public Const INI_KEY_TAB_CNT         As String = "Tab_Cnt"

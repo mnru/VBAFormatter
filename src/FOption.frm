@@ -18,10 +18,6 @@ Private Sub CancelBtn_Click()
     Unload Me
 End Sub
 
-Private Sub Frame1_Click()
-    
-End Sub
-
 Private Sub OKBtn_Click()
     Const ERR_MSG1 As String = "—LŒø‚È’l‚Í‚P`‚R‚Q‚Ì®”‚Å‚·B"
     

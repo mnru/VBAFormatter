@@ -1,26 +1,17 @@
 Attribute VB_Name = "INICtrl"
-#If VBA7 Then 
-
-Declare PtrSafe Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" _
-(ByVal AppName As String, ByVal KeyName As String, ByVal Default As String, _
-ByVal ReturnedString As String, ByVal MaxSize As Long, ByVal FileName As String) As Long
-
-Declare PtrSafe Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" _
-(ByVal AppName As String, ByVal KeyName As Any, ByVal lpString As Any, _
-ByVal FileName As String) As Long
-
-#Else
-
 Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" _
-(ByVal AppName As String, ByVal KeyName As String, ByVal Default As String, _
-ByVal ReturnedString As String, ByVal MaxSize As Long, ByVal FileName As String) As Long
+(ByVal AppName As String, _
+ByVal KeyName As String, _
+ByVal Default As String, _
+ByVal ReturnedString As String, _
+ByVal MaxSize As Long, _
+ByVal FileName As String) As Long
 
 Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" _
-(ByVal AppName As String, ByVal KeyName As Any, ByVal lpString As Any, _
+(ByVal AppName As String, _
+ByVal KeyName As Any, _
+ByVal lpString As Any, _
 ByVal FileName As String) As Long
-
-#End If
-
 
 Public Const INI_NAME                As String = "VBAFormatter.Ini"
 Public Const INI_SEC_OPT_FORMAT      As String = "OptFormat"
@@ -47,8 +38,8 @@ Public Function GetIniValue(aIniKey As String, aIniSection As String) As String
     GetIniValue = Left(wIniVal, InStr(wIniVal, vbNullChar) - 1)
     If GetIniValue = "" Then
         Err.Raise 1000 - vbObjectError, _
-        "ï¿½İ’ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ìæ“¾", _
-        "ï¿½İ’ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½İ‚Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B" & vbNewLine & Application.UserLibraryPath & "ï¿½É‘ï¿½ï¿½İ‚ï¿½ï¿½ï¿½uVBAFormatter.Iniï¿½vï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Aï¿½Ä“xï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ä‚İ‚Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B" & aIniKey & vbNewLine & aIniSection
+        "İ’èƒtƒ@ƒCƒ‹‚Ìæ“¾", _
+        "İ’èƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B" & vbNewLine & Application.UserLibraryPath & "‚É‘¶İ‚·‚éuVBAFormatter.Iniv‚ğíœ‚µAÄ“xÀs‚µ‚Ä‚İ‚Ä‚­‚¾‚³‚¢B" & aIniKey & vbNewLine & aIniSection
     End If
 End Function
 
