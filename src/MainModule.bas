@@ -165,22 +165,24 @@ End Function
 
 Sub FormatExecMain()
     Dim mVBComp As VBComponent
-    Dim cmps As VBComponents
+    Dim cmps As Variant
     If Not IsExistsIni Then
         Call CreateIniFile
     End If
     Call IniRead
     Call init
+        Set cmps = Application.VBE.ActiveVBProject.VBComponents
+    
     If cIniKeyList.aIsAllModuleExec Then
         'For Each mVBComp In ActiveWorkbook.VBProject.VBComponents
-        Set cmps = Application.VBE.ActiveVBProject.VBComponents
         For Each mVBComp In cmps
             Call Exec(mVBComp.CodeModule)
             Set cBLList = New Collection
             tabCount = 0
         Next mVBComp
     Else
-        Call Exec(ActiveWorkbook.Application.VBE.SelectedVBComponent.CodeModule)
+       ' Call Exec(ActiveWorkbook.Application.VBE.SelectedVBComponent.CodeModule)
+        Call Exec(cmps.VBE.SelectedVBComponent.CodeModule)
     End If
 End Sub
 
