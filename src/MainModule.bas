@@ -240,94 +240,94 @@ Sub FixAs(aCodeModule As CodeModule)
     Next i
 End Sub
 
-Sub FixCom(aCodeModule As CodeModule)
-    Dim i, j    As Integer
-    Dim wDic    As Dictionary
-    Dim wKeys
-    Dim wKey    As Variant
-    Dim wStr    As Variant
-    Dim wMax    As Integer
-    Dim tempStr As Variant
-    For i = 1 To cBLList.Count
-        wMax = 0
-        Set wDic = cBLList(i)
-        wKeys = wDic.Keys
-
-        For Each wKey In wKeys
-            wStr = wDic(wKey)
-            tempStr = wStr
-            While InStr(tempStr, """") > 1
-                tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
-            Wend
-            If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) And (Instr2(1, wStr, "'") > wMax) Then
-                wMax = Instr2(1, wStr, "'")
-            End If
-        Next
-
-        For Each wKey In wKeys
-            wStr = wDic(wKey)
-            tempStr = wStr
-            While InStr(tempStr, """") > 1
-                tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
-            Wend
-            If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) Then
-                'wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & WorksheetFunction.Rept(" ", wMax - Instr2(1, wStr, "'")) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
-                Dim spacenum As Long
-                spacenum = wMax - Instr2(1, wStr, "           '")
-                If spacenum < 0 Then spacenum = 0
-                wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & space(spacenum) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
-                aCodeModule.ReplaceLine wKey, wStr
-            End If
-        Next
-    Next i
-End Sub
-
 'Sub FixCom(aCodeModule As CodeModule)
-'    Dim i, j  As Integer
-'    Dim wDic  As Dictionary
-'    Dim dicHit As Dictionary
+'    Dim i, j    As Integer
+'    Dim wDic    As Dictionary
 '    Dim wKeys
-'    Dim wKey  As Variant
-'    Dim wStr  As String
-'    Dim wMax  As Long
+'    Dim wKey    As Variant
+'    Dim wStr    As Variant
+'    Dim wMax    As Integer
 '    Dim tempStr As Variant
-'    Dim str1 As String
-'    Dim str2 As String
-'    Dim spacenum As String
-'    Dim pos As Long
-'    Dim width As Long
-'    Dim tmp As Variant
-'
 '    For i = 1 To cBLList.Count
 '        wMax = 0
 '        Set wDic = cBLList(i)
-'        Set dicHit = New Dictionary
-'        Debug.Print wDic(1)
 '        wKeys = wDic.Keys
 '
 '        For Each wKey In wKeys
 '            wStr = wDic(wKey)
-'            pos = getOutsidePos(wStr, "'")
-'            If pos > 0 Then
-'                width = getStringWidth(Left(wStr, pos))
-'                If width > wMax Then wMax = width
-'                dicHit.Add wKey, Array(pos, width)
+'            tempStr = wStr
+'            While InStr(tempStr, """") > 1
+'                tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
+'            Wend
+'            If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) And (Instr2(1, wStr, "'") > wMax) Then
+'                wMax = Instr2(1, wStr, "'")
 '            End If
 '        Next
 '
-'        For Each wKey In dicHit.Keys
+'        For Each wKey In wKeys
 '            wStr = wDic(wKey)
-'            tmp = dicHit(wKey)
-'            pos = tmp(0)
-'            width = tmp(1)
-'            str1 = Left(wStr, pos)
-'            str2 = Right(wStr, Len(wStr) - pos)
-'            wStr = str1 & space(wMax - width) & str2
-'
-'            aCodeModule.ReplaceLine wKey, wStr
+'            tempStr = wStr
+'            While InStr(tempStr, """") > 1
+'                tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
+'            Wend
+'            If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) Then
+'                'wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & WorksheetFunction.Rept(" ", wMax - Instr2(1, wStr, "'")) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
+'                Dim spacenum As Long
+'                spacenum = wMax - Instr2(1, wStr, "           '")
+'                If spacenum < 0 Then spacenum = 0
+'                wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & space(spacenum) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
+'                aCodeModule.ReplaceLine wKey, wStr
+'            End If
 '        Next
 '    Next i
 'End Sub
+
+Sub FixCom(aCodeModule As CodeModule)
+    Dim i, j  As Integer
+    Dim wDic  As Dictionary
+    Dim dicHit As Dictionary
+    Dim wKeys
+    Dim wKey  As Variant
+    Dim wStr  As String
+    Dim wMax  As Long
+    Dim tempStr As Variant
+    Dim str1 As String
+    Dim str2 As String
+    Dim spacenum As String
+    Dim pos As Long
+    Dim width As Long
+    Dim tmp As Variant
+
+    For i = 1 To cBLList.Count
+        wMax = 0
+        Set wDic = cBLList(i)
+        Set dicHit = New Dictionary
+        Debug.Print wDic(1)
+        wKeys = wDic.Keys
+
+        For Each wKey In wKeys
+            wStr = wDic(wKey)
+            pos = getOutsidePos(wStr, "'")
+            If pos > 0 Then
+                width = getStringWidth(Left(wStr, pos))
+                If width > wMax Then wMax = width
+                dicHit.Add wKey, Array(pos, width)
+            End If
+        Next
+
+        For Each wKey In dicHit.Keys
+            wStr = wDic(wKey)
+            tmp = dicHit(wKey)
+            pos = tmp(0)
+            width = tmp(1)
+            str1 = Left(wStr, pos)
+            str2 = Right(wStr, Len(wStr) - pos)
+            wStr = str1 & space(wMax - width) & str2
+
+            aCodeModule.ReplaceLine wKey, wStr
+        Next
+    Next i
+End Sub
 
 
 Function Instr2(aStart As Integer, aString1 As Variant, aString2 As String) As Long
@@ -426,7 +426,11 @@ Function getOutsidePos(ByVal str1 As String, ByVal dlm As String) As Long
             ret = pos1 - 1
             Exit Do
         End If
-        pos0 = pos1
+        pos0 = pos1 + 1
+        If pos0 > Len(str1) Then
+        ret = 0
+        Exit Do
+        End If
     Loop
     getOutsidePos = ret
 End Function
