@@ -8,33 +8,30 @@ Private cBeginDef  As New Collection
 Private clsVBAFormatMenu As VBAFormatMenu
 Private cBLList   As New Collection
 
-
 Sub addButton()
   Dim wVBAFormatterMenu As CommandBarControl
   Dim wOptionMenu  As CommandBarControl
   Dim wFormatExecMenu As CommandBarControl
-  Set wVBAFormatterMenu = Application.VBE.CommandBars("ƒƒjƒ…[ ƒo[").Controls.Add(Type:=msoControlPopup, ID:=1)
+  Set wVBAFormatterMenu = Application.VBE.CommandBars("ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ ï¿½oï¿½[").Controls.Add(Type:=msoControlPopup, ID:=1)
   wVBAFormatterMenu.Caption = "VBAFormatter(&Z)"
   Set wFormatExecMenu = wVBAFormatterMenu.Controls.Add(Type:=msoControlButton)
   Set wOptionMenu = wVBAFormatterMenu.Controls.Add(Type:=msoControlButton)
-  wFormatExecMenu.Caption = "ƒtƒH[ƒ}ƒbƒgŽÀs(&F)..."
-  wOptionMenu.Caption = "ƒIƒvƒVƒ‡ƒ“(&O)..."
+  wFormatExecMenu.Caption = "ï¿½tï¿½Hï¿½[ï¿½}ï¿½bï¿½gï¿½ï¿½ï¿½s(&F)..."
+  wOptionMenu.Caption = "ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½(&O)..."
   Set clsVBAFormatMenu = New VBAFormatMenu
   Call clsVBAFormatMenu.InitializeInstance(wFormatExecMenu, wOptionMenu)
 End Sub
 
-
 Sub dellButton()
   Dim wCtrl As CommandBarControl
   Set clsVBAFormatMenu = Nothing
-  For Each wCtrl In Application.VBE.CommandBars("ƒƒjƒ…[ ƒo[").Controls
+  For Each wCtrl In Application.VBE.CommandBars("ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ ï¿½oï¿½[").Controls
     If wCtrl.ID = 1 Then
       wCtrl.Delete
       Exit Sub
     End If
   Next
 End Sub
-
 
 Function indentEdit(prev, this) As String
   Dim space As String
@@ -56,7 +53,6 @@ Function indentEdit(prev, this) As String
   Wend
   indentEdit = space & Trim(this)
 End Function
-
 
 Sub readPrintTxt(aCodeModule As CodeModule)
   Dim prevBuf As Variant
@@ -80,7 +76,6 @@ Sub readPrintTxt(aCodeModule As CodeModule)
     End If
   Next i
 End Sub
-
 
 Sub init()
   Set cBeginList = New Collection
@@ -134,7 +129,6 @@ Sub init()
   '
 End Sub
 
-
 Function isMemberOfCollection(col As Collection, query As Variant) As Boolean
   Dim item
   For Each item In col
@@ -145,7 +139,6 @@ Function isMemberOfCollection(col As Collection, query As Variant) As Boolean
   Next
   isMemberOfCollection = False
 End Function
-
 
 Function isOneLineCode(str As Variant) As Boolean
   Dim buff As Variant
@@ -161,7 +154,6 @@ Else
 End If
 End If
 End Function
-
 
 Sub FormatExecMain()
   Dim mVBComp As VBComponent
@@ -187,33 +179,25 @@ Sub FormatExecMain()
   End If
 End Sub
 
-
 Sub Exec(aCodeModule As CodeModule)
   Call readPrintTxt(aCodeModule)
-    'Debug.Print "readPrintTxt done"
   If cIniKeyList.aIsAsFormat Then
     Call FixAs(aCodeModule)
-    'Debug.Print "FixAs done"
   End If
   If cIniKeyList.aIsCommentFormat Then
     Call FixCom(aCodeModule)
-    'Debug.Print "FixCom done"
   End If
   If cIniKeyList.aIsDeleteNewLine Then
     Call deleteNewLine(aCodeModule)
-    'Debug.Print "deleteNewLine done"
   End If
   If cIniKeyList.aIsInsertNewLine Then
     Call insertNewLineBeforeDef(aCodeModule)
-    'Debug.Print "insertNewLineBeforeDef done"
   End If
 End Sub
-
 
 Sub OptionMain()
   FOption.Show
 End Sub
-
 
 Sub FixAs(aCodeModule As CodeModule)
   Dim i, j As Integer
@@ -247,49 +231,6 @@ Sub FixAs(aCodeModule As CodeModule)
     Next
   Next i
 End Sub
-
-'Sub FixCom(aCodeModule As CodeModule)
-'  Dim i, j  As Integer
-'  Dim wDic  As Dictionary
-'  Dim wKeys
-'  Dim wKey  As Variant
-'  Dim wStr  As Variant
-'  Dim wMax  As Integer
-'  Dim tempStr As Variant
-'  For i = 1 To cBLList.Count
-'    wMax = 0
-'    Set wDic = cBLList(i)
-'    wKeys = wDic.Keys
-'
-'    For Each wKey In wKeys
-'      wStr = wDic(wKey)
-'      tempStr = wStr
-'      While InStr(tempStr, """") > 1
-'        tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
-'      Wend
-'      If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) And (Instr2(1, wStr, "'") > wMax) Then
-'        wMax = Instr2(1, wStr, "'")
-'      End If
-'    Next
-'
-'    For Each wKey In wKeys
-'      wStr = wDic(wKey)
-'      tempStr = wStr
-'      While InStr(tempStr, """") > 1
-'        tempStr = Replace(tempStr, Mid(tempStr, InStr(tempStr, """"), InStr(InStr(tempStr, """"), tempStr, """") + 1 - InStr(tempStr, """")), "")
-'      Wend
-'      If (Left(Trim(wStr), 1) <> "'") And (InStr(tempStr, "'") > 0) Then
-'        'wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & WorksheetFunction.Rept(" ", wMax - Instr2(1, wStr, "'")) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
-'        Dim spacenum As Long
-'        spacenum = wMax - Instr2(1, wStr, "      '")
-'        If spacenum < 0 Then spacenum = 0
-'        wStr = StrConv(LeftB(StrConv(wStr, vbFromUnicode), Instr2(1, wStr, "'") - 1), vbUnicode) & space(spacenum) & StrConv(RightB(StrConv(wStr, vbFromUnicode), LenB(StrConv(wStr, vbFromUnicode)) - Instr2(1, wStr, "'") + 1), vbUnicode)
-'        aCodeModule.ReplaceLine wKey, wStr
-'      End If
-'    Next
-'  Next i
-'End Sub
-
 
 Sub FixCom(aCodeModule As CodeModule)
   Dim i, j As Integer
@@ -334,11 +275,9 @@ Sub FixCom(aCodeModule As CodeModule)
   Next i
 End Sub
 
-
 Function Instr2(aStart As Integer, aString1 As Variant, aString2 As String) As Long
   Instr2 = InStrB(aStart, StrConv(aString1, vbFromUnicode), StrConv(aString2, vbFromUnicode))
 End Function
-
 
 Sub deleteNewLine(aCodeModule As CodeModule)
   Dim i As Long
@@ -351,7 +290,6 @@ Sub deleteNewLine(aCodeModule As CodeModule)
     End If
   Next i
 End Sub
-
 
 Sub insertNewLineBeforeDef(aCodeModule As CodeModule)
   Dim n As Long
@@ -372,7 +310,6 @@ Sub insertNewLineBeforeDef(aCodeModule As CodeModule)
   Next i
 End Sub
 
-
 Function startDef(str0 As String) As Boolean
   Dim ret As Boolean
   ret = False
@@ -385,7 +322,6 @@ Function startDef(str0 As String) As Boolean
   Next
   startDef = ret
 End Function
-
 
 Function startWith(str0 As String, str1 As String) As Boolean
   Dim ret As Boolean
@@ -400,7 +336,6 @@ Function startWith(str0 As String, str1 As String) As Boolean
   End If
   startWith = ret
 End Function
-
 
 Private Function countStr(ByVal str1 As String, ByVal dlm As String) As Long
   Dim ret As Long
@@ -440,14 +375,11 @@ Function getOverQuotePos(ByVal str1 As String, ByVal dlm As String) As Long
   getOverQuotePos = ret
 End Function
 
-
 Function getStringWidth(str As String) As Long
   Dim ret As Long
   ret = LenB(StrConv(str, vbFromUnicode))
   getStringWidth = ret
 End Function
-
-
 
 Sub testqqq()
   Const x    As Long = 1
