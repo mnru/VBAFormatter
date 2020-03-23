@@ -24,7 +24,6 @@ Public Const INI_KEY_COMENT_EXEC   As String = "CommentExec"
 Public Const INI_KEY_DELETE_NEWLINE   As String = "DeleteAllNewLine"
 Public Const INI_KEY_INSERT_NEWLINE   As String = "InsertNewLineBeforeDef"
 
-
 Public Type INI_KEY_LIST
     aTabCnt     As Integer
     aIsAllModuleExec As Boolean
@@ -35,7 +34,6 @@ Public Type INI_KEY_LIST
     aIsInsertNewLine As Boolean
 End Type
 Public cIniKeyList As INI_KEY_LIST
-
 
 Public Function GetIniValue(aIniKey As String, aIniSection As String) As String
     Dim wIniVal As String * 1024
@@ -49,17 +47,14 @@ Public Function GetIniValue(aIniKey As String, aIniSection As String) As String
     End If
 End Function
 
-
 Public Sub SetIniValue(aIniKey As String, aIniSection As String, aValue As String)
     Dim wRet   As Long
     wRet = WritePrivateProfileString(aIniSection, aIniKey, aValue, ThisWorkbook.Path & "\" & INI_NAME)
 End Sub
 
-
 Public Function IsExistsIni() As Boolean
     IsExistsIni = Dir(ThisWorkbook.Path & "\" & INI_NAME) <> ""
 End Function
-
 
 Public Sub CreateIniFile()
     Dim wNo As Integer
@@ -78,7 +73,6 @@ Public Sub CreateIniFile()
     Close #wNo
 End Sub
 
-
 Public Sub IniWrite()
     Call SetIniValue(INI_KEY_TAB_CNT, INI_SEC_OPT_FORMAT, FOption.TxtTabCnt.Text)
     Call SetIniValue(INI_KEY_ALL_MODULE_EXEC, INI_SEC_OPT_FORMAT, FOption.IsAllModuleExec.Value)
@@ -88,7 +82,6 @@ Public Sub IniWrite()
     Call SetIniValue(INI_KEY_DELETE_NEWLINE, INI_SEC_OPT_FORMAT, FOption.IsDeleteNewLine.Value)
     Call SetIniValue(INI_KEY_INSERT_NEWLINE, INI_SEC_OPT_FORMAT, FOption.IsInsertNewLine.Value)
 End Sub
-
 
 Public Sub IniRead()
     With cIniKeyList

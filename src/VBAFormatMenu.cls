@@ -13,12 +13,10 @@ Attribute cFormatExecEvent.VB_VarHelpID = -1
 Private WithEvents cOptionEvent     As CommandBarEvents
 Attribute cOptionEvent.VB_VarHelpID = -1
 
-
 Public Sub InitializeInstance(ByVal aFormatExecEvent As CommandBarControl, ByVal aOptionEvent As CommandBarControl)
     Set cFormatExecEvent = Application.VBE.Events.CommandBarEvents(aFormatExecEvent)
     Set cOptionEvent = Application.VBE.Events.CommandBarEvents(aOptionEvent)
 End Sub
-
 
 Private Sub cFormatExecEvent_Click(ByVal CommandBarControl As Object, handled As Boolean, CancelDefault As Boolean)
     On Error GoTo cFormatExecEvent_Click_err
@@ -27,7 +25,6 @@ Private Sub cFormatExecEvent_Click(ByVal CommandBarControl As Object, handled As
 cFormatExecEvent_Click_err:
     MsgBox Err.Description
 End Sub
-
 
 Private Sub cOptionEvent_Click(ByVal CommandBarControl As Object, handled As Boolean, CancelDefault As Boolean)
     On Error GoTo cOptionEvent_Click_err

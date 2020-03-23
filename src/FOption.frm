@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FOption 
    Caption         =   "Option"
    ClientHeight    =   5070
-   ClientLeft      =   50
-   ClientTop       =   380
-   ClientWidth     =   5170
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   5175
    OleObjectBlob   =   "FOption.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
@@ -13,11 +13,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 Private Sub CancelBtn_Click()
     Unload Me
 End Sub
-
 
 Private Sub OKBtn_Click()
     Const ERR_MSG1 As String = "有効な値は１～３２の整数です。"
@@ -36,7 +34,6 @@ Private Sub OKBtn_Click()
     Unload Me
 End Sub
 
-
 Private Sub TxtTabCnt_Change()
     If Len(TxtTabCnt.Text) = 0 Then
         Exit Sub
@@ -47,13 +44,11 @@ Private Sub TxtTabCnt_Change()
     TxtTabCnt.Text = Left(TxtTabCnt.Text, Len(TxtTabCnt.Text) - 1)
 End Sub
 
-
 Private Sub TxtTabCnt_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     If Chr(KeyAscii) < "0" Or Chr(KeyAscii) > "9" Then
         KeyAscii = 0
     End If
 End Sub
-
 
 Private Sub UserForm_Initialize()
     If Not IsExistsIni Then
