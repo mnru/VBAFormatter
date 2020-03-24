@@ -33,10 +33,9 @@ Sub dellButton()
     Next
 End Sub
 
-Function indentEdit(prev, this) As String
+Function indentEdit(prev As String, this As String) As String
     this = Trim(this)
     prev = Trim(prev)
-    Dim space As String
     If likeKeyword("End Select", this) Then
         tabCount = tabCount - (2 * cIniKeyList.aTabCnt)
     ElseIf likeMemberOfCollection(cEndList, this) And this <> "End" Then
@@ -50,8 +49,7 @@ Function indentEdit(prev, this) As String
     If tabCount < 0 Then
         tabCount = 0
     End If
-    space = String(tabCount, " ")
-    indentEdit = space & Trim(this)
+    indentEdit = space(tabCount) & Trim(this)
 End Function
 
 Sub readPrintTxt(aCodeModule As CodeModule)
@@ -102,6 +100,7 @@ Sub init()
     cBeginList.Add "Private Type"
     cBeginList.Add "Public Type"
     cBeginList.Add "Public Property"
+    cBeginList.Add "Private Property"
     ' cBeginList.Add "Then"
     cBeginList.Add "Public Enum"
     cBeginList.Add "Case"
@@ -120,6 +119,7 @@ Sub init()
     cBeginDef.Add "Private Type"
     cBeginDef.Add "Public Type"
     cBeginDef.Add "Public Property"
+    cBeginDef.Add "Private Property"
     cBeginDef.Add "Sub"
     cBeginDef.Add "Public Sub"
     cBeginDef.Add "Private Sub"
@@ -159,19 +159,18 @@ Function likeMemberOfCollection(col As Collection, query As Variant) As Boolean
     likeMemberOfCollection = ret
 End Function
 
-Function isOneLineCode(str As Variant) As Boolean
-    Dim buff As Variant
-    isOneLineCode = False
-    If InStr(str, "'") = 0 Then
-        If (InStr(str, "Then") <> 0 And InStr(str, "Then") + 3 < Len(str)) Or InStr(str, "End Function") <> 0 Or InStr(str, "End Sub") Or InStr(str, "End Property") <> 0 Or InStr(str, "End If") <> 0 Then
-        isOneLineCode = True
-    End If
-Else
-    buff = Trim(StrConv(LeftB(StrConv(str, vbFromUnicode), Instr2(1, str, "'") - 1), vbUnicode))
-    If (InStr(buff, "Then") <> 0 And InStr(buff, "Then") + 3 < Len(buff)) Or InStr(buff, "End Function") <> 0 Or InStr(buff, "End Sub") Or InStr(str, "End Property") <> 0 Or InStr(buff, "End If") <> 0 Then
-    isOneLineCode = True
-End If
-End If
+Function isOneLineCode(str As String) As Boolean
+    Dim buff As String
+    Dim ret As Boolean
+    Dim word, endWords
+    ret = False
+    buff = Trim(delComment(str))
+    endWords = Array("End Sub", "End Function", "End Property", "End If")
+    For Each word In endWords
+        If buff Like "*" & word Then ret = True
+    Next
+    If getPosOverQuote(buff, "Then") > 0 And Not buff Like "* Then" Then ret = True
+    isOneLineCode = ret
 End Function
 
 Sub FormatExecMain()
@@ -270,7 +269,7 @@ Sub FixCom(aCodeModule As CodeModule)
         wKeys = wDic.Keys
         For Each wKey In wKeys
             wStr = wDic(wKey)
-            pos = getOverQuotePos(wStr, "'")
+            pos = getPosOverQuote(wStr, "'")
             If pos > 0 Then
                 width = getStringWidth(Left(wStr, pos - 1))
                 If width > wMax Then
@@ -354,13 +353,22 @@ Function startWith(str0 As String, str1 As String) As Boolean
     startWith = ret
 End Function
 
+Function delComment(sLine As String) As String
+    Dim ret As String
+    Dim n As Long
+    ret = sLine
+    n = getPosOverQuote(sLine, "'")
+    If n > 0 Then ret = Left(sLine, n - 1)
+    delComment = ret
+End Function
+
 Private Function countStr(ByVal str1 As String, ByVal dlm As String) As Long
     Dim ret As Long
     ret = (Len(str1) - Len(Replace(str1, dlm, ""))) / Len(dlm)
     countStr = ret
 End Function
 
-Function getOverQuotePos(ByVal str1 As String, ByVal dlm As String) As Long
+Function getPosOverQuote(ByVal str1 As String, ByVal dlm As String) As Long
     Dim ret As Long
     Dim tmp As String
     Dim pos0 As Long
@@ -389,7 +397,7 @@ Function getOverQuotePos(ByVal str1 As String, ByVal dlm As String) As Long
             Exit Do
         End If
     Loop
-    getOverQuotePos = ret
+    getPosOverQuote = ret
 End Function
 
 Function getStringWidth(str As String) As Long
